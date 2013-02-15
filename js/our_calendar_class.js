@@ -2,10 +2,10 @@
 //Depends on fullcalendar.js
 window.Calendar = (function() {
 
-  function Calendar(container, currentEventsFn) {
+  function Calendar(container, eventsFn) {
     this.currentlyRendered = false;
     this.container = container;
-    this.currentEventsFn = currentEventsFn;
+    this.filteredEventsFn = eventsFn;
   };
 
   Calendar.prototype.load = function() {
@@ -25,7 +25,7 @@ window.Calendar = (function() {
 
         var eventsInPeriod, eventObjs;
 
-        var filtered_events = self.currentEventsFn();
+        var filtered_events = self.filteredEventsFn();
 
         eventsInPeriod = filtered_events.filter(function(event) { 
           return (

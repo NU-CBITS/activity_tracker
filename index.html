@@ -822,44 +822,44 @@ loadPage = function() {
 
   // Setup Activity Calendar Goals  
 
-  ActivityCalGoals = new XelementCollection(XELEMENTS.filter(function(xel) {
-    return (xel.get_field_value("title") == "Activity Calendar Goal")
-  })); 
+  // ActivityCalGoals = new XelementCollection(XELEMENTS.filter(function(xel) {
+  //  return (xel.get_field_value("title") == "Activity Calendar Goal")
+  // })); 
 
-  ActivityCalGoalData = new DataCollection(null);
+  // ActivityCalGoalData = new DataCollection(null);
 
-  ActivityCalGoals.each(function(goal_xel) {
-    var data;
+  // ActivityCalGoals.each(function(goal_xel) {
+  //   var data;
 
-    // Fetch any existing data on the server for this user and goal.
-    var dc = new DataCollection(null, {
-      xelement_id: goal_xel.id,
-      user_id: Dynamo.CURRENT_USER_ID,
-      group_id: Dynamo.CURRENT_GROUP_ID      
-    });
-    dc.fetch({async: false});
+  //   // Fetch any existing data on the server for this user and goal.
+  //   var dc = new DataCollection(null, {
+  //     xelement_id: goal_xel.id,
+  //     user_id: Dynamo.CURRENT_USER_ID,
+  //     group_id: Dynamo.CURRENT_GROUP_ID      
+  //   });
+  //   dc.fetch({async: false});
 
-    if (dc.length > 0) {
-      data = dc.first();
-    }
-    else {
-      // if length is 0, then no data exists, create new object.
-      data = new Dynamo.Data({
-        server_url: Dynamo.TriremeURL,
-        xelement_id: goal_xel.id,
-        user_id: Dynamo.CURRENT_USER_ID,
-        group_id: Dynamo.CURRENT_GROUP_ID       
-      });
-    };
+  //   if (dc.length > 0) {
+  //     data = dc.first();
+  //   }
+  //   else {
+  //     // if length is 0, then no data exists, create new object.
+  //     data = new Dynamo.Data({
+  //       server_url: Dynamo.TriremeURL,
+  //       xelement_id: goal_xel.id,
+  //       user_id: Dynamo.CURRENT_USER_ID,
+  //       group_id: Dynamo.CURRENT_GROUP_ID       
+  //     });
+  //   };
     
-    ActivityCalGoalData.add(data); 
-    // Either way, it gets added to the collection of user data about calendar goals.
-  });
+  //   ActivityCalGoalData.add(data); 
+  //   // Either way, it gets added to the collection of user data about calendar goals.
+  // });
 
-  goalsView = new GoalsView({
-    goals:  ActivityCalGoals,
-    goalData: ActivityCalGoalData
-  });
+  // goalsView = new GoalsView({
+  //   goals:  ActivityCalGoals,
+  //   goalData: ActivityCalGoalData
+  // });
 
   // Setup Activity Calendar Guides
 
@@ -1036,7 +1036,7 @@ loadPage = function() {
   // RENDER EVERYTHING.
 
   // render goals
-  $('div#log-tracking').html(goalsView.render().$el);
+  // $('div#log-tracking').html(goalsView.render().$el);
 
 
   // render guides
@@ -1058,7 +1058,7 @@ loadPage = function() {
     currentVisualization.remove();
     switch($(clickEvent.currentTarget).val()) {
       case "calendar":
-        currentVisualization = new Calendar("div#activity-list-container");
+        currentVisualization = new Calendar('div#activity-list-container', filteredEvents);
         break;
       case "list":
         currentVisualization = new ShowArrayView({
@@ -1167,10 +1167,10 @@ $(function() {
         <div class="span5">
           <div class="accordion-container header-well swell">
             <div class="row-fluid accordion-header">
-              <legend class="span11"><span class="legend-header">To Do</span></legend>
+<!--               <legend class="span11"><span class="legend-header">To Do</span></legend>
               <div class="span1 caret-icons">
                 <i class="icon-caret-down pull-right"></i>
-              </div>
+              </div> -->
             </div>
             <div id="to-do-body" class="accordion-body">
               <div class="well-white well well-small" style="margin-bottom:0px;">
