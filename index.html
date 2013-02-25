@@ -10,6 +10,18 @@
 <link rel="stylesheet" href="css/global.css" />
 
 <style media="screen" type="text/css">
+  .navbar-inner {
+    -webkit-border-radius: 4px 4px 0px 0px;
+     -moz-border-radius: 4px 4px 0px 0px;
+          border-radius: 4px 4px 0px 0px;
+  }
+  /*over-ride widget-content border-radius*/
+  .widget-content {
+    -webkit-border-radius: 0px 0px 4px 4px ;
+     -moz-border-radius: 0px 0px 4px 4px ;
+          border-radius: 0px 0px 4px 4px ;
+  }
+
   form.inline, div.inline {
     display:inline-block;
   }
@@ -90,7 +102,7 @@ see http://arshaw.com/fullcalendar/docs for details
 
 <script id="event-form-template" type='text/html'>
     <div class="navbar" style="margin-bottom: 0px;">
-      <div class="navbar-inner">
+      <div class="navbar-inner" style="border-bottom-width:0px;">
         <a class="brand">Event Editor</a>
         <ul class="nav pull-right accordion-header">
           <li class="caret-icons">
@@ -439,7 +451,7 @@ see http://arshaw.com/fullcalendar/docs for details
 
 <script id="guides-template" type="text/html">
   <div class="navbar" style="margin-bottom: 0px;">
-    <div class="navbar-inner" id="guide-select-nav">
+    <div class="navbar-inner" id="guide-select-nav" style="border-bottom-width:0px;">
     </div>
   </div>
 
@@ -1204,12 +1216,12 @@ $(function() {
           </div>
 
         </div>
-        <div class="span7 swell accordion-container">
+        <div class="span7 accordion-container">
 
           <div id="filter-container">
 
             <div class="navbar" style="margin-bottom: 0px;">
-              <div class="navbar-inner">
+              <div class="navbar-inner" style="border-bottom-width:0px;">
                 <a class="brand">Visualization</a>
                 <ul class="nav pull-right accordion-header">
                   <li class="dropdown">
@@ -1308,8 +1320,10 @@ $(function() {
                 </div>
               </div>
             </div>
-          </div> 
-          <div>
+
+          </div>
+
+          <div class="widget-content" style="padding-top:0px;">
             <div id="visualizations" class="row-fluid btn-toolbar">
               <div class="span6">
                 <button class="btn btn-block" value="calendar"><i class="icon-calendar"></i> Calendar</button>
@@ -1326,7 +1340,9 @@ $(function() {
               </div>
 -->              
             </div> 
-            <div id="activity-list-container" class="well-small well-white" style="margin-top:0px;padding-top:0px;"></div>
+            
+            <div id="activity-list-container"></div>
+          
           </div>
         </div>
       </div>
