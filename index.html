@@ -452,7 +452,6 @@ see http://arshaw.com/fullcalendar/docs for details
 <script id="guides-template" type="text/html">
 
   <div class="navbar" style="margin-bottom: 0px;">
-    <span id="guide-title" class="legend-header">Guides</span>
     <div class="navbar-inner" id="guide-select-nav" style="border-bottom-width:0px;">
     </div>
   </div>
@@ -581,10 +580,9 @@ GuidePlayerView = Dynamo.ChooseOneXelementFromCollectionView.extend({
 
   renderSlide: function() {
   	this.currentSlide = this.currentGuide.slides.at( this.currentSlideIndex() );
-    this.$el.find("span#guide-title").text(this.currentGuide.get_field_value("title"));
     this.$el.find("div#current-slide").html( this.currentSlide.get_field_value("content") );
-    this.$el.find("div#current-slide").append("<div id='actions'></div>");
-    var $actions = this.$el.find("div#current-slide div#actions");
+    this.$el.find("div#current-slide").prepend( t.tag("h3",this.currentGuide.get_field_value("title") ) );
+    var $actions = $("div#current-slide-actions");
     this.currentSlide.actions.each(function(action) {
 
       $actions.append( 
@@ -1139,7 +1137,7 @@ $(function() {
 
           </div>
 
-          <div class="widget-content" style="padding-top:0px;">
+          <div id="visualizations-container" class="widget-content" style="padding-top:0px;">
             <div id="visualizations" class="row-fluid btn-toolbar">
               <div class="span6">
                 <button class="btn btn-block" value="calendar"><i class="icon-calendar"></i> Calendar</button>
