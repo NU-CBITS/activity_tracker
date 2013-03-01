@@ -1,6 +1,6 @@
 // **********************************************************
 // 
-// t - A small html-snippet helper library!
+// tee - A small html-snippet helper library!
 // 
 // Adds a single global object, t, 
 // which provides a small html-snippet helper library.
