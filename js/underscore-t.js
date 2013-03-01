@@ -13,6 +13,12 @@
 // 
 // **********************************************************
 
+_.templateSettings = {
+  interpolate : /\(\%\=(.+?)\%\)/g,
+  evaluate    : /\(\%(.+?)\%\)/g,
+  escape      : /\(\%\-(.+?)\%\)/g //interpolate with first escaping HTML
+};
+
 //internal var for storing all html-creating functions :).
 window.t = {};
 
@@ -28,11 +34,11 @@ t.SELF_CLOSING_TAGS = [
 // one for closing tags.
 // used internally by 't'.
 t.sc_template = 
-  "<<%= tag %> <% _.each(atts, function(value, key) { %><%= key %>='<%= value %>' <% }); %> />";
+  "<(%= tag %)(% _.each(atts, function(value, key) { %) (%= key %)='(%= value %)'(% }); %)/>";
 t.ct_template = 
-  "<<%= tag %> <% _.each(atts, function(value, key) { %><%= key %>='<%= value %>' <% }); %> >" +
-    "<%= content %>" + 
-  "</<%= tag %>>";
+  "<(%= tag %)(% _.each(atts, function(value, key) { %) (%= key %)='(%= value %)'(% }); %)>" +
+    "(%= content %)" + 
+  "</(%= tag %)>";
 
 
 
@@ -60,18 +66,11 @@ t.tag = function(_tag) { //, atts, content
  
     // Not a self-closing tag 
     if (_.indexOf(t.SELF_CLOSING_TAGS, _tag, true) == -1 ) {
-      return _.template(t.ct_template, {
-        tag: _tag,
-        atts: atts,
-        content: content
-      }); 
+      return _.template(t.ct_template, { tag: _tag, atts: atts, content: content }); 
     };
 
     // A self-closing tag
-    return _.template(t.sc_template, {
-      tag: _tag,
-      atts: atts
-    });
+    return _.template(t.sc_template, { tag: _tag, atts: atts });
 
   } else {
   
