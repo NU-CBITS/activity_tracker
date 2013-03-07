@@ -415,6 +415,7 @@ hr.divider-prog-pink {
 #filters {
   display:none;
   padding: 10px;
+  position: relative;
 }
 
 #filter-container .dropdown-menu:before {
