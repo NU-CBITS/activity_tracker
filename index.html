@@ -10,18 +10,6 @@
 <link rel="stylesheet" href="css/global.css" />
 
 <style media="screen" type="text/css">
-  .navbar-inner {
-    -webkit-border-radius: 4px 4px 0px 0px;
-     -moz-border-radius: 4px 4px 0px 0px;
-          border-radius: 4px 4px 0px 0px;
-  }
-  /*over-ride widget-content border-radius*/
-  .widget-content {
-    -webkit-border-radius: 0px 0px 4px 4px ;
-     -moz-border-radius: 0px 0px 4px 4px ;
-          border-radius: 0px 0px 4px 4px ;
-  }
-
   form.inline, div.inline {
     display:inline-block;
   }
@@ -59,6 +47,24 @@
   }
   button i.icon-ok {
     color:#468847;
+  }
+  #visualizations-container.widget-content {
+    padding-top:10px;
+  }
+  #visualizations.btn-toolbar {
+    margin-top:0px;
+  }
+  #filters-container {
+    position:relative;
+  }
+  #filters.popover {
+    display:none;
+    width: inherit;
+    position: absolute;
+    margin-top: 0px;
+  }
+  #filters.popover .arrow {
+    left: 96%;
   }
 </style>
 
@@ -516,144 +522,162 @@ $(function() {
 </head>
 
 <body>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="brand cbits" href="./index.html">CBITs</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav pull-right">
+            <li class="">
+              <a href="#">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- page-container connect -->
-  <div id="app-container" class="container-fluid" style="padding-top:20px;">
+  <div id="app-container" class="container-fluid" style="margin-top:60px;">
     <div id="app-row-1" class="row-fluid">
       <div id="left-half-container" class="span5">
 
-        <div id="guides-container" class="accordion-container">
+        <div id="guides-container" class="accordion-container widget">
         </div>
 
-        <div id="edit-event-container" class="accordion-container">        
+        <div id="edit-event-container" class="accordion-container widget">        
         </div>
 
       </div>
       <div id="right-half-container" class="span7 accordion-container">
-        <div>
-          <div id="visualizations-navigation" class="navbar" style="margin-bottom: 0px;">
-            <div class="navbar-inner" style="border-bottom-width:0px;">
-              <a class="brand">Visualization</a>
-              <ul class="nav pull-right accordion-header">
-                <li class="dropdown">
-                  <a href="#" id="show-filter-container" class="dropdown-toggle" data-toggle="dropdown">Filter <b class="caret"></b>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+
+        <div id="visualizations-navigation" class="widget-header orange navbar">
+          <h3>Visualization</h3>
+          <ul class="nav pull-right accordion-header">
+            <li class="dropdown">
+              <a href="#" id="show-filter-container" class="dropdown-toggle">Filter <b class="caret"></b>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="widget-content">
 
           <div id="filters-container" class="row-fluid">
-            <div id="filters" class="dropdown-menu span12">
-              <div id="time-filters-container" class="span3">
-                <div id="time-filters">
-                  <label>Time</label>
-                  <label class="checkbox" for="filter-mornings">
-                    <input id="filter-mornings" type="checkbox" value="mornings">Mornings
-                  </label>
+            <div id="filters" class="popover fade bottom in span12">
+              <div class="arrow"></div>
+              <div class="popover-content">
+                <div id="time-filters-container" class="span3">
+                  <div id="time-filters">
+                    <label>Time</label>
+                    <label class="checkbox" for="filter-mornings">
+                      <input id="filter-mornings" type="checkbox" value="mornings">Mornings
+                    </label>
 
-                  <label class="checkbox" for="filter-afternoons">
-                    <input id="filter-afternoons" type="checkbox" value="afternoons">Afternoons
-                  </label>
-                  <label class="checkbox" for="filter-evenings">
-                    <input id="filter-evenings" type="checkbox" value="evenings">Evenings
-                  </label>
+                    <label class="checkbox" for="filter-afternoons">
+                      <input id="filter-afternoons" type="checkbox" value="afternoons">Afternoons
+                    </label>
+                    <label class="checkbox" for="filter-evenings">
+                      <input id="filter-evenings" type="checkbox" value="evenings">Evenings
+                    </label>
+                  </div>
                 </div>
-              </div>
-              <div id="topic-filters-container" class="span3">
-                <div id="topic-filters">
-                  <label>Topic</label>
-                  <label class="checkbox" for="filter-work">
-                    <input id="filter-work" type="checkbox" value="Work">Work
-                  </label>
-                  <label class="checkbox" for="filter-family">
-                    <input id="filter-family" type="checkbox" value="Family">Family
-                  </label>
-                  <label class="checkbox" for="filter-school">
-                    <input id="filter-school" type="checkbox" value="School">School
-                  </label>
-                  <label class="checkbox" for="filter-chores">
-                    <input id="filter-chores" type="checkbox" value="Chores">Chores
-                  </label>
-                  <label class="checkbox" for="filter-leisure">
-                    <input id="filter-leisure" type="checkbox" value="Leisure">Leisure
-                  </label>
-                  <label class="checkbox" for="filter-self-care">
-                    <input id="filter-self-care" type="checkbox" value="Self-care">Self-care
-                  </label>
+                <div id="topic-filters-container" class="span3">
+                  <div id="topic-filters">
+                    <label>Topic</label>
+                    <label class="checkbox" for="filter-work">
+                      <input id="filter-work" type="checkbox" value="Work">Work
+                    </label>
+                    <label class="checkbox" for="filter-family">
+                      <input id="filter-family" type="checkbox" value="Family">Family
+                    </label>
+                    <label class="checkbox" for="filter-school">
+                      <input id="filter-school" type="checkbox" value="School">School
+                    </label>
+                    <label class="checkbox" for="filter-chores">
+                      <input id="filter-chores" type="checkbox" value="Chores">Chores
+                    </label>
+                    <label class="checkbox" for="filter-leisure">
+                      <input id="filter-leisure" type="checkbox" value="Leisure">Leisure
+                    </label>
+                    <label class="checkbox" for="filter-self-care">
+                      <input id="filter-self-care" type="checkbox" value="Self-care">Self-care
+                    </label>
+                  </div>
                 </div>
-              </div>
-              <div id="experience-filters-container" class="span3">
-                <div id="experience-filters">
-                  <label>Experience</label>
-                  <label class="checkbox" for="filter-low-predicted-pleasure">
-                    <input id="filter-low-predicted-pleasure" type="checkbox" value="low_predicted_pleasure">Low Pred. Pleasure
-                  </label>
-                  <label class="checkbox" for="filter-low-actual-pleasure">
-                    <input id="filter-low-actual-pleasure" type="checkbox" value="low_actual_pleasure">Low Actual Pleasure
-                  </label>
-                  <label class="checkbox" for="filter-low-predicted-accomplishment">
-                    <input id="filter-low-predicted-accomplishment" type="checkbox" value="low_predicted_accomplishment">Low Pred. Accomplishment        
-                  </label>        
-                  <label class="checkbox" for="filter-low-actual-accomplisment">
-                    <input id="filter-low-actual-accomplisment" type="checkbox" value="low_actual_accomplishment">Low Actual Accomplishment
-                  </label>
-                  <label class="checkbox" for="filter-high-predicted-pleasure">
-                    <input id="filter-high-predicted-pleasure" type="checkbox" value="high_predicted_pleasure">High Pred. Pleasure
-                  </label>
-                  <label class="checkbox" for="filter-high-actual-pleasure">
-                    <input id="filter-high-actual-pleasure" type="checkbox" value="high_actual_pleasure">High Actual Pleasure                
-                  </label>
-                  <label class="checkbox" for="filter-high-predicted-accomplishment">
-                    <input id="filter-high-predicted-accomplishment" type="checkbox" value="high_predicted_accomplishment">High Pred. Accomplishment
-                  </label>
-                  <label class="checkbox" for="filter-high-actual-accomplishment">
-                    <input id="filter-high-actual-accomplishment" type="checkbox" value="high_actual_accomplishment">High Actual Accomplishment
-                  </label>
+                <div id="experience-filters-container" class="span3">
+                  <div id="experience-filters">
+                    <label>Experience</label>
+                    <label class="checkbox" for="filter-low-predicted-pleasure">
+                      <input id="filter-low-predicted-pleasure" type="checkbox" value="low_predicted_pleasure">Low Pred. Pleasure
+                    </label>
+                    <label class="checkbox" for="filter-low-actual-pleasure">
+                      <input id="filter-low-actual-pleasure" type="checkbox" value="low_actual_pleasure">Low Actual Pleasure
+                    </label>
+                    <label class="checkbox" for="filter-low-predicted-accomplishment">
+                      <input id="filter-low-predicted-accomplishment" type="checkbox" value="low_predicted_accomplishment">Low Pred. Accomplishment        
+                    </label>        
+                    <label class="checkbox" for="filter-low-actual-accomplisment">
+                      <input id="filter-low-actual-accomplisment" type="checkbox" value="low_actual_accomplishment">Low Actual Accomplishment
+                    </label>
+                    <label class="checkbox" for="filter-high-predicted-pleasure">
+                      <input id="filter-high-predicted-pleasure" type="checkbox" value="high_predicted_pleasure">High Pred. Pleasure
+                    </label>
+                    <label class="checkbox" for="filter-high-actual-pleasure">
+                      <input id="filter-high-actual-pleasure" type="checkbox" value="high_actual_pleasure">High Actual Pleasure                
+                    </label>
+                    <label class="checkbox" for="filter-high-predicted-accomplishment">
+                      <input id="filter-high-predicted-accomplishment" type="checkbox" value="high_predicted_accomplishment">High Pred. Accomplishment
+                    </label>
+                    <label class="checkbox" for="filter-high-actual-accomplishment">
+                      <input id="filter-high-actual-accomplishment" type="checkbox" value="high_actual_accomplishment">High Actual Accomplishment
+                    </label>
+                  </div>
                 </div>
-              </div>
-              <div id="emotion-filters-container" class="span3">
-                <div id="emotion-filters">
-                  <label>Emotion</label>
-                  <label class="checkbox" for="filter-sad">
-                    <input id="filter-sad" type="checkbox" value="sad">Sad
-                  </label>
-                  <label class="checkbox" for="filter-happy">
-                    <input id="filter-happy" type="checkbox" value="happy">Happy
-                  </label>
-                  <label class="checkbox" for="filter-angry">
-                    <input id="filter-angry" type="checkbox" value="angry">Angry
-                  </label>
-                  <label class="checkbox" for="filter-anxious">
-                    <input id="filter-anxious" type="checkbox" value="anxious">Anxious
-                  </label>
+                <div id="emotion-filters-container" class="span3">
+                  <div id="emotion-filters">
+                    <label>Emotion</label>
+                    <label class="checkbox" for="filter-sad">
+                      <input id="filter-sad" type="checkbox" value="sad">Sad
+                    </label>
+                    <label class="checkbox" for="filter-happy">
+                      <input id="filter-happy" type="checkbox" value="happy">Happy
+                    </label>
+                    <label class="checkbox" for="filter-angry">
+                      <input id="filter-angry" type="checkbox" value="angry">Angry
+                    </label>
+                    <label class="checkbox" for="filter-anxious">
+                      <input id="filter-anxious" type="checkbox" value="anxious">Anxious
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div id="visualizations-container" class="widget-content" style="padding-top:0px;">
-          <div id="visualizations" class="row-fluid btn-toolbar">
-            <div id="calendar-button-container" class="span6">
-              <button id="calendar-button" class="btn btn-block" value="calendar"><i class="icon-calendar"></i> Calendar</button>
-            </div>
-            <div id="list-button-container" class="span6">
-              <button id="list-button" class="btn btn-block" value="list"><i class="icon-list"></i> List</button>
-            </div>
-<!--              
-            <div class="span3">
-              <button class="btn btn-block" value="list"><i class="icon-signal"></i> Graph</button>
-            </div>
-            <div class="span3">
-              <button class="btn btn-block" value="list"><i class="icon-map-marker"></i> Life Map</button>
-            </div>
--->              
-          </div> 
-          
-          <div id="activity-list-container"></div>
-        </div>
+          <div id="visualizations-container">
+            <div id="visualizations" class="row-fluid btn-toolbar">
+              <div id="calendar-button-container" class="span6">
+                <button id="calendar-button" class="btn btn-block" value="calendar"><i class="icon-calendar"></i> Calendar</button>
+              </div>
+              <div id="list-button-container" class="span6">
+                <button id="list-button" class="btn btn-block" value="list"><i class="icon-list"></i> List</button>
+              </div>             
+            </div>  
 
-      </div>
+            <div id="activity-list-container"></div>
+
+          </div> <!-- visualizations-container -->
+        
+        </div> <!-- widget-content -->
+
+      </div> <!-- right-half-container -->
+
     </div>
   </div>
 </body>
