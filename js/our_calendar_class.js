@@ -44,9 +44,8 @@ window.Calendar = (function() {
       eventClick: function(calEvent, jsEvent, view) {
         var acEvent = ActivityCalEvents.get(calEvent.id);
         editEventView.updateModel( acEvent );
-        //editEventView should have an updated start time
-        //and an updated 'currentState'
-        $('div#edit-event-form').displayFormAndDownChevronArrow().effect("highlight", {}, 1000);
+        //editEventView should have an updated start time and an updated 'currentState'
+        $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
       },
 
       dayClick: function(timeClicked, allDay, jsEvent, view) {
@@ -70,7 +69,7 @@ window.Calendar = (function() {
         editEventView.updateModel(newModel);
         //editEventView should have an updated start time
         //and an updated 'currentState'
-        $('div#edit-event-form').displayFormAndDownChevronArrow().effect("highlight", {}, 1000);
+        $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
       }    
     });
 

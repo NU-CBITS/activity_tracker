@@ -145,6 +145,20 @@ jQuery.fn.displayFormAndDownChevronArrow = function() {
   return $(this);
 };
 
+jQuery.fn.openForm = function() {
+  var container = $(this);
+  var body = container.find(".accordion-body");
+  if (body.length === 1) { body.show() };
+  if ( chevronArrowIsRight(container) ) {
+    toggleChevronArrow(container);  
+  }
+  return $(this);
+};
+
+chevronArrowIsRight = function($header) {
+  return ($header.find('i.icon-caret-right').length !== 0)
+};
+
 rotateArrowRight = function(header) {
   header.find('i.icon-caret-down').removeClass('icon-caret-down').addClass('icon-caret-right');
 };
@@ -152,6 +166,7 @@ rotateArrowRight = function(header) {
 rotateArrowDown = function(header) {
   header.find('i.icon-caret-right').removeClass('icon-caret-right').addClass('icon-caret-down');
 };
+
 
 toggleChevronArrow = function(header) {
   if (header.find('i.icon-caret-right').length === 1) {
@@ -450,7 +465,7 @@ loadPage = function() {
           onElementClick: function(clickEvent) {
             var event = ActivityCalEvents.get($(clickEvent.currentTarget).data("cid"));
             editEventView.updateModel( event );
-            $('div#edit-event-form').effect("highlight", {}, 2000);
+            $('div#edit-event-container').effect("highlight", {}, 2000);
           }
         });
         break;
@@ -578,7 +593,6 @@ $(function() {
                     <label class="checkbox" for="filter-mornings">
                       <input id="filter-mornings" type="checkbox" value="mornings">Mornings
                     </label>
-
                     <label class="checkbox" for="filter-afternoons">
                       <input id="filter-afternoons" type="checkbox" value="afternoons">Afternoons
                     </label>
@@ -641,7 +655,7 @@ $(function() {
                 </div>
                 <div id="emotion-filters-container" class="span3">
                   <div id="emotion-filters">
-                    <label>Emotion</label>
+                    <label>Emotions</label>
                     <label class="checkbox" for="filter-sad">
                       <input id="filter-sad" type="checkbox" value="sad">Sad
                     </label>
