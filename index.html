@@ -236,10 +236,9 @@ loadPage = function() {
   // Setup Activity Calendar Guides
   //
 
-  ActivityCalGuides = GUIDES;
-  // .filter(function(xel) {
-  //   return (xel.get_field_value("content_description") == "Activity Calendar Guide")
-  // });
+  ActivityCalGuides = new GuideCollection(GUIDES.filter(function(xel) {
+    return (xel.get_field_value("content_description") == "Activity Tracker");
+  }));
 
   ActivityCalGuideData = new DataCollection(null);
 
@@ -497,6 +496,7 @@ loadPage = function() {
     };
   });
 
+  console.log("Page Fully Loaded! - yaaay!");
   Backbone.trigger("PageLoad:Complete");
 
 };
