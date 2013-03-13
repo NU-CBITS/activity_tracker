@@ -145,38 +145,6 @@ jQuery.fn.displayFormAndDownChevronArrow = function() {
   return $(this);
 };
 
-jQuery.fn.openForm = function() {
-  var container = $(this);
-  var body = container.find(".accordion-body");
-  if (body.length === 1) { body.show() };
-  if ( chevronArrowIsRight(container) ) {
-    toggleChevronArrow(container);  
-  }
-  return $(this);
-};
-
-chevronArrowIsRight = function($header) {
-  return ($header.find('i.icon-caret-right').length !== 0)
-};
-
-rotateArrowRight = function(header) {
-  header.find('i.icon-caret-down').removeClass('icon-caret-down').addClass('icon-caret-right');
-};
-
-rotateArrowDown = function(header) {
-  header.find('i.icon-caret-right').removeClass('icon-caret-right').addClass('icon-caret-down');
-};
-
-
-toggleChevronArrow = function(header) {
-  if (header.find('i.icon-caret-right').length === 1) {
-    rotateArrowDown(header);
-  } else {
-    rotateArrowRight(header);
-  }
-};
-
-
 // Activity Tracker Specific Dynamo Stuff:
 
 Dynamo.AUTHENTICATING_USER_ID = function() { return "TEST-USER-GUID" };
@@ -291,7 +259,58 @@ loadPage = function() {
     //  Either way, it gets added to the collection of user data about calendar guides.
   });
 
-  guidesViewer = new GuidePlayerView({
+
+  var opensAndClosesWithChevron = {
+
+    events: {
+      "click .accordion-header li.caret-icons": "displayWidgetContent"
+    },
+
+    displayWidgetContent: function() {
+      var body = this.$el.find(".accordion-body");
+      if (body.is(":visible")) {
+        body.hide();
+        this.rotateArrowRight();
+      } else {
+        body.show();
+        this.toggleChevronArrow();
+      }
+    },
+
+    rotateArrowRight: function() {
+      this.$el.find('i.icon-caret-down').removeClass('icon-caret-down').addClass('icon-caret-right');
+    },
+
+    rotateArrowDown: function() {
+      this.$el.find('i.icon-caret-right').removeClass('icon-caret-right').addClass('icon-caret-down');
+    },
+
+    toggleChevronArrow: function() {
+      if (this.$el.find('i.icon-caret-right').length === 1) {
+        this.rotateArrowDown();
+      } else {
+        this.rotateArrowRight();
+      }
+    }
+
+  };
+
+  var opensAndClosesWithChevronWithGoals = _.extend(opensAndClosesWithChevron, {
+
+    displayGoalsAndWidgetContent: function() {
+      this.$el.find(".accordion-body").show();
+      this.rotateArrowDown();
+    }
+
+  });
+
+  _.extend(opensAndClosesWithChevronWithGoals.events, {"click li.dropdown a.dropdown-toggle": "displayGoalsAndWidgetContent"})
+
+  var gpvWithChevrons = GuidePlayerView.extend(opensAndClosesWithChevronWithGoals);
+
+  // editEventView = new mbWithChevrons({
+
+  guidesViewer = new gpvWithChevrons({
     template: DIT["dynamo/guides/show"],
     collection: ActivityCalGuides,
     guideData: ActivityCalGuideData
@@ -321,8 +340,13 @@ loadPage = function() {
   // Define editEventView
   //
 
-  editEventView = new ModelBackoutView({
+
+  mbWithChevrons = ModelBackoutView.extend(opensAndClosesWithChevron);
+
+  editEventView = new mbWithChevrons({
+
     el: "div#edit-event-container",
+
     computedAtts: {
       currentState: {
         read: function() {
@@ -489,36 +513,6 @@ loadPage = function() {
     };
     return false;
   });
-
-  $(".accordion-header").live('click', function(event){
-    var header = $(this);
-    var body = header.closest(".accordion-container").find(".accordion-body");
-    if (body.is(":visible")) {
-      if (!$(event.target).closest("ul#guides-list").hasClass("dropdown-menu")) {
-        body.hide();
-        rotateArrowRight(header);
-      }
-    } else {
-      body.show();
-      toggleChevronArrow(header);
-    }
-  });
-
-  $("#goals-accordion-header").live('click', function(event){
-    var target = $(event.target);
-    var header = $("#goals-accordion-header");
-    var body = $("#goals");
-    if (target.hasClass('goals-btn')) {
-      body.show();
-      rotateArrowDown(header);
-    } else {
-      body.toggle();
-      toggleChevronArrow(header);
-    };
-  });
-
-  console.log("Page Fully Loaded! - yaaay!");
-  Backbone.trigger("PageLoad:Complete");
 
 };
 
