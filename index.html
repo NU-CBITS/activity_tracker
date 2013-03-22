@@ -259,58 +259,7 @@ loadPage = function() {
     //  Either way, it gets added to the collection of user data about calendar guides.
   });
 
-
-  var opensAndClosesWithChevron = {
-
-    events: {
-      "click .accordion-header li.caret-icons": "displayWidgetContent"
-    },
-
-    displayWidgetContent: function() {
-      var body = this.$el.find(".accordion-body");
-      if (body.is(":visible")) {
-        body.hide();
-        this.rotateArrowRight();
-      } else {
-        body.show();
-        this.toggleChevronArrow();
-      }
-    },
-
-    rotateArrowRight: function() {
-      this.$el.find('i.icon-caret-down').removeClass('icon-caret-down').addClass('icon-caret-right');
-    },
-
-    rotateArrowDown: function() {
-      this.$el.find('i.icon-caret-right').removeClass('icon-caret-right').addClass('icon-caret-down');
-    },
-
-    toggleChevronArrow: function() {
-      if (this.$el.find('i.icon-caret-right').length === 1) {
-        this.rotateArrowDown();
-      } else {
-        this.rotateArrowRight();
-      }
-    }
-
-  };
-
-  var opensAndClosesWithChevronWithGoals = _.extend(opensAndClosesWithChevron, {
-
-    displayGoalsAndWidgetContent: function() {
-      this.$el.find(".accordion-body").show();
-      this.rotateArrowDown();
-    }
-
-  });
-
-  _.extend(opensAndClosesWithChevronWithGoals.events, {"click li.dropdown a.dropdown-toggle": "displayGoalsAndWidgetContent"})
-
-  var gpvWithChevrons = GuidePlayerView.extend(opensAndClosesWithChevronWithGoals);
-
-  // editEventView = new mbWithChevrons({
-
-  guidesViewer = new gpvWithChevrons({
+  guidesViewer = new GuidePlayerView({
     template: DIT["dynamo/guides/show"],
     collection: ActivityCalGuides,
     guideData: ActivityCalGuideData
@@ -340,6 +289,46 @@ loadPage = function() {
   // Define editEventView
   //
 
+  var opensAndClosesWithChevron = {
+
+    events: {
+      "click .accordion-header li.caret-icons": "showWidgetContent",
+      "click li.dropdown a.dropdown-toggle": "showDropdownAndWidgetContent"
+    },
+
+    showWidgetContent: function() {
+      var body = this.$el.find(".accordion-body");
+      if (body.is(":visible")) {
+        body.hide();
+        this.rotateArrowRight();
+      } else {
+        body.show();
+        this.toggleChevronArrow();
+      }
+    },
+
+    showDropdownAndWidgetContent: function() {
+      this.$el.find(".accordion-body").show();
+      this.rotateArrowDown();
+    },
+
+    rotateArrowRight: function() {
+      this.$el.find('i.icon-caret-down').removeClass('icon-caret-down').addClass('icon-caret-right');
+    },
+
+    rotateArrowDown: function() {
+      this.$el.find('i.icon-caret-right').removeClass('icon-caret-right').addClass('icon-caret-down');
+    },
+
+    toggleChevronArrow: function() {
+      if (this.$el.find('i.icon-caret-right').length === 1) {
+        this.rotateArrowDown();
+      } else {
+        this.rotateArrowRight();
+      }
+    }
+
+  };
 
   mbWithChevrons = ModelBackoutView.extend(opensAndClosesWithChevron);
 
@@ -401,7 +390,8 @@ loadPage = function() {
       "tags": ""
     },
     knockoutTemplate: DIT["dynamo/activity_tracker/edit_event"] 
-  });
+  });  
+
 
   editEventView.on('model:save', function() {
     editEventView.model.save({async:false});
