@@ -1,5 +1,20 @@
 //Calendar
 //Depends on fullcalendar.js
+
+jQuery.fn.openForm = function() {
+  var container = $(this);
+  var body = container.find(".accordion-body");
+  if (body.length === 1) { body.show() };
+  if ( chevronArrowIsRight(container) ) {
+    toggleChevronArrow(container);  
+  }
+  return $(this);
+};
+
+chevronArrowIsRight = function($header) {
+  return ($header.find('i.icon-caret-right').length !== 0)
+};
+
 window.Calendar = (function() {
 
   function Calendar(container, eventsFn) {
