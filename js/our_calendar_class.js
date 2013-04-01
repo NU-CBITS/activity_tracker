@@ -27,9 +27,9 @@ window.Calendar = (function() {
     var self = this;
     $(this.container).prepend('<div id="calendar"></div>');
     this.$el = $(this.container).find('div#calendar');
-
+    var height = $("#visualizations-outer-container").height() - 40;
     this.$el.fullCalendar({
-      height:490,
+      height:height,
       header: {
         left: 'agendaDay,agendaWeek,month',
         center: 'title',

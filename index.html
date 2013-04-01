@@ -221,6 +221,7 @@ eventFilters.add(function (event) {
 
 loadPage = function() {
 
+  setVisualizationOuterContainerHeight();
   //
   // Setup Activity Calendar Guides
   //
@@ -513,6 +514,16 @@ $(function() {
 
   Dynamo.initialize();
   initializeLoadAndThen(loadPage);
+
+  setVisualizationOuterContainerHeight = function() {
+    var newHeight, windowHeight = $(window).height();
+    newHeight = windowHeight - 142;
+    $("#visualizations-outer-container").css({
+      height:newHeight
+    });
+  };
+  $(window).resize(setVisualizationOuterContainerHeight); //however, it doesn't resize calendar
+
   $("#predict-slider").slider( "value", 5 );
 
 });  
@@ -565,7 +576,7 @@ $(function() {
           </ul>
         </div>
 
-        <div class="widget-content" style="overflow-y: scroll;height:530px;padding-top: 10px">
+        <div id="visualizations-outer-container" class="widget-content" style="overflow-y: scroll;padding-top: 10px">
 
           <div id="filters-container" class="row-fluid">
             <div id="filters" class="popover fade bottom in span12">
