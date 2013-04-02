@@ -72,8 +72,6 @@ FilterSet = (function() {
                     "Result: ", result
                     )
 
-        debugger;        
-
         return result;
 
 
