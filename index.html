@@ -505,6 +505,11 @@ loadPage = function() {
     return false;
   });
 
+  // DO NOT REMOVE.
+  // this line is here for the benefit of Guide Editor, 
+  // so that it can detect html written to the page by BB.
+  Backbone.trigger("PageLoad:Complete")
+
 };
 
 // 
