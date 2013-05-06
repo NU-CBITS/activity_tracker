@@ -449,7 +449,7 @@ loadPage = function() {
   //
 
   // Guides
-  $('div#guides-container').html(guidesViewer.render().$el);
+  $('div#guides-container').html(guidesViewer.render().$el).find(".accordion-body").show()
 
   // editEventView
   editEventView.updateModel(new ActivityCalEvent({
