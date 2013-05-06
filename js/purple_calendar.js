@@ -15,7 +15,7 @@ chevronArrowIsRight = function($header) {
   return ($header.find('i.icon-caret-right').length !== 0)
 };
 
-window.Calendar = (function() {
+window.PurpleCalendar = (function() {
 
   function Calendar(container, eventsFn) {
     this.currentlyRendered = false;
@@ -28,6 +28,7 @@ window.Calendar = (function() {
     $(this.container).prepend('<div id="calendar"></div>');
     this.$el = $(this.container).find('div#calendar');
     var height = $("#visualizations-outer-container").height() - 40;
+    
     this.$el.fullCalendar({
       height:height,
       header: {

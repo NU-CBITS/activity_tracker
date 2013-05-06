@@ -99,7 +99,7 @@
 see http://arshaw.com/fullcalendar/docs for details
  -->
 <script type='text/javascript' src='js/vendor/fullcalendar.js'></script>
-<script type='text/javascript' src='js/our_calendar_class.js'></script>
+<script type='text/javascript' src='js/purple_calendar.js'></script>
 
 <script type='text/javascript' src='js/slider.js'></script>
 
@@ -461,7 +461,7 @@ loadPage = function() {
   }));
 
   // Visualizations
-  currentVisualization = new Calendar('div#activity-list-container', filteredEvents);
+  currentVisualization = new PurpleCalendar('div#activity-list-container', filteredEvents);
   renderVisualization();
 
   // Visualization Selection Handler

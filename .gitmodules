@@ -1,3 +1,6 @@
 [submodule "dynamo"]
 	path = dynamo
 	url = https://github.com/nupmmarkbegale/dynamo
+[submodule "css/purple_styles"]
+	path = css/purple_styles
+	url = git@github.com:nupmmarkbegale/purple_styles.git
