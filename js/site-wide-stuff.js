@@ -78,7 +78,7 @@ initializeLoadAndThen = function(callback) {
   LIKES_GUID = "SOCIAL-NETWORKING-LIKES-GUID"
   COMMENTS_GUID = "SOCIAL-NETWORKING-COMMENTS-GUID"
   Dynamo.CURRENT_USER_ID = 'TEST-USER-GUID';
-  Dynamo.CURRENT_GROUP_ID = "56f2b376381f92998576451ac6c80678";
+  Dynamo.CURRENT_GROUP_ID = "DEMO-GROUP-GUID";
 
   xel_base_request = $.get( addSessionVarsToUrl(Dynamo.TriremeURL+'/xelements/xelement_base') );
   // -- Global variables that store all of the specific
