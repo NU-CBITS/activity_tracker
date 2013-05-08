@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
 <title>Activity Tracker</title>
+<meta  name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no">
 <link rel='stylesheet' type='text/css' href='css/fullcalendar.css' />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
 <link rel="stylesheet" href="css/purple_styles/application.css" />
-
+<link rel="stylesheet" type="text/css" href="js/vendor/scheduler/dhtmlxscheduler.css">
+<!-- <link rel="stylesheet" type="text/css" href="js/vendor/scheduler/dhtmlxscheduler_dhx_terrace.css"> -->
+<link rel="stylesheet" type="text/css" href="js/vendor/scheduler/dhtmlxscheduler_glossy.css">
 <style media="screen" type="text/css">
   form.inline, div.inline {
     display:inline-block;
@@ -97,6 +100,8 @@
 see http://arshaw.com/fullcalendar/docs for details
  -->
 <script type='text/javascript' src='js/vendor/fullcalendar.js'></script>
+<script type='text/javascript' src='js/vendor/scheduler/dhtmlxscheduler.js'></script>
+
 <script type='text/javascript' src='js/purple_calendar.js'></script>
 
 <script type='text/javascript' src='js/slider.js'></script>
@@ -557,7 +562,9 @@ $(function() {
 
   <!-- page-container connect -->
   <div id="app-container" class="container-fluid" style="margin-top:60px;">
+
     <div id="app-row-1" class="row-fluid">
+
       <div id="left-half-container" class="span5">
 
         <div id="guides-container" class="accordion-container widget">
@@ -683,7 +690,8 @@ $(function() {
             </div>
 
             <div class="stream">
-              <div id="activity-list-container"></div>
+              <div id="activity-list-container">
+              </div>
             </div>
 
           </div> <!-- visualizations-container -->
@@ -694,6 +702,7 @@ $(function() {
 
     </div>
   </div>
+
 </body>
 
 
