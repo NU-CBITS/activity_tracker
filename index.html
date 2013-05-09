@@ -396,7 +396,6 @@ loadPage = function() {
     knockoutTemplate: DIT["dynamo/activity_tracker/edit_event"] 
   });  
 
-
   editEventView.on('model:save', function() {
     editEventView.model.save({async:false});
     ActivityCalEvents.add(editEventView.model, { merge: true });
@@ -407,11 +406,13 @@ loadPage = function() {
         group_id: Dynamo.CURRENT_GROUP_ID
       })
     );
+    renderVisualization();
   });
 
   editEventView.on('model:delete', function() {
     ActivityCalEvents.remove(editEventView.model);
     editEventView.model.destroy({async:false, success: function() {
+      renderVisualization(); //not working!
       alert('Your event was deleted.');
     }});
     editEventView.updateModel(
@@ -430,7 +431,8 @@ loadPage = function() {
     self.model.on('change:fromKnockout', function() {
       var m = self.model
       // More validations needed?
-      if (m.get('end') > m.get('start') ) {
+      if ( (m.get('end') > m.get('start')) ) {
+      // if ( (m.get('end') > m.get('start')) || (m.get_field_value('end') > m.get_field_value('start')) ) {
         var calEventIds = _.map(calendarEvents, function(calEvent){ return calEvent.id; });
         var eventIndex = _.indexOf(calEventIds, m.cid);
 

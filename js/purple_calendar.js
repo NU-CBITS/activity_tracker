@@ -91,6 +91,26 @@ window.PurpleCalendar = (function() {
       $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
     });
 
+    // scheduler.attachEvent("onBeforeLightbox", function (event_id){
+    //   var calEvent = scheduler.getEvent(event_id);
+    //   var newModel = new ActivityCalEvent();
+    //   newModel.set_field('title', 'string', calEvent.text);
+    //   newModel.set_field('start', 'datetime', calEvent.start_date);
+    //   newModel.set_field('end', 'datetime', calEvent.end_date);
+    //   editEventView.updateModel(newModel);
+    //   $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
+    // });
+
+    // scheduler.attachEvent("onEventCreated", function(event_id,event_object){
+    //   var calEvent = scheduler.getEvent(event_id);
+    //   var newModel = new ActivityCalEvent();
+    //   newModel.set_field('title', 'string', calEvent.text);
+    //   newModel.set_field('start', 'datetime', calEvent.start_date);
+    //   newModel.set_field('end', 'datetime', calEvent.end_date);
+    //   editEventView.updateModel(newModel);
+    //   $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
+    // });
+
     // if ((screen.width < 480) || (screen.height < 480)) {
     if ((document.width < 480) || (document.height < 480)) {
 
