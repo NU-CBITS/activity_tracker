@@ -336,6 +336,10 @@ loadPage = function() {
 
   mbWithChevrons = ModelBackoutView.extend(opensAndClosesWithChevron);
 
+  // Visualizations
+  currentVisualization = new PurpleCalendar('div#activity-list-container', filteredEvents);
+  renderVisualization();
+
   editEventView = new mbWithChevrons({
 
     el: "div#edit-event-container",
@@ -430,9 +434,9 @@ loadPage = function() {
     self.model = newModelObj;
     self.model.on('change:fromKnockout', function() {
       var m = self.model
+      var calendarEvents = filteredEvents();
       // More validations needed?
-      if ( (m.get('end') > m.get('start')) ) {
-      // if ( (m.get('end') > m.get('start')) || (m.get_field_value('end') > m.get_field_value('start')) ) {
+      if ( (m.get_field_value('end') > m.get_field_value('start')) ) {      
         var calEventIds = _.map(calendarEvents, function(calEvent){ return calEvent.id; });
         var eventIndex = _.indexOf(calEventIds, m.cid);
 
@@ -464,10 +468,6 @@ loadPage = function() {
     user_id: Dynamo.CURRENT_USER_ID,
     group_id: Dynamo.CURRENT_GROUP_ID
   }));
-
-  // Visualizations
-  currentVisualization = new PurpleCalendar('div#activity-list-container', filteredEvents);
-  renderVisualization();
 
   // Visualization Selection Handler
   $('div#visualizations button').click(function(clickEvent) {

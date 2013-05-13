@@ -35,7 +35,7 @@ window.PurpleCalendar = (function() {
       return _.extend({id: calEvent.cid, text: calEvent.get_field_value('title'), start_date:startDateString, end_date:endDateString }, calEvent.get_fields_as_object());
     });
     scheduler.parse(eventObjs,"json");
-  }
+  };
 
   Calendar.prototype.load = function() {
     var self = this;
@@ -77,19 +77,20 @@ window.PurpleCalendar = (function() {
 
     // onClick - occurs when the user clicks the left mouse button on an event
     scheduler.attachEvent("onClick", function (event_id, native_event_object){
-      var calEvent = scheduler.getEvent(event_id);
-      var acEvent = ActivityCalEvents.get(calEvent.id);
-      editEventView.updateModel(acEvent);
-      $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
+      updateACEventOpenForm(event_id);
     });
 
     // onDblClick - occurs when the user dbl-clicks on an event
     scheduler.attachEvent("onDblClick", function (event_id, native_event_object){
+      updateACEventOpenForm(event_id);
+    });
+
+    updateACEventOpenForm = function(event_id) {
       var calEvent = scheduler.getEvent(event_id);
       var acEvent = ActivityCalEvents.get(calEvent.id);
       editEventView.updateModel(acEvent);
       $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
-    });
+    };
 
     // scheduler.attachEvent("onBeforeLightbox", function (event_id){
     //   var calEvent = scheduler.getEvent(event_id);
