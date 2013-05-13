@@ -21,29 +21,20 @@ window.PurpleCalendar = (function() {
     this.filteredEventsFn = eventsFn;
   };
 
-  Calendar.prototype.loadJSONData = function() {
+  Calendar.prototype.initScheduler = function() {
     var self = this;
-    var eventObjs, filtered_events = self.filteredEventsFn();
 
-    eventObjs = filtered_events.map(function(calEvent) { 
-      var startDate = calEvent.get_field_value('start');
-      var startMonth = startDate.getMonth() + 1;
-      var startDateString = ((startMonth<10?'0':'') + startMonth)+"."+( (startDate.getDate()<10?'0':'') + startDate.getDate())+"."+startDate.getFullYear()+" "+startDate.getHours()+":"+( (startDate.getMinutes()<10?'0':'') + startDate.getMinutes() );
-      var endDate = calEvent.get_field_value('end');
-      var endMonth = endDate.getMonth() + 1;
-      var endDateString = ((endMonth<10?'0':'') + endMonth)+"."+( (endDate.getDate()<10?'0':'') + endDate.getDate())+"."+endDate.getFullYear()+" "+endDate.getHours()+":"+( (endDate.getMinutes()<10?'0':'') + endDate.getMinutes() );
-      return _.extend({id: calEvent.cid, text: calEvent.get_field_value('title'), start_date:startDateString, end_date:endDateString }, calEvent.get_fields_as_object());
-    });
-    scheduler.parse(eventObjs,"json");
-  };
+    self.purpleScheduler = scheduler; //relies on dhtmlxscheduler.js
 
-  Calendar.prototype.load = function() {
-    var self = this;
-    var schedulerHTML = '<div id="scheduler_here" class="dhx_cal_container" style="width:100%; height:500px;""><div class="dhx_cal_navline"><div class="dhx_cal_prev_button">&nbsp;</div><div class="dhx_cal_next_button">&nbsp;</div><div class="dhx_cal_today_button"></div><div class="dhx_cal_date"></div><div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div><div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div><div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div></div><div class="dhx_cal_header"></div><div class="dhx_cal_data"></div></div>'
-    $(this.container).prepend(schedulerHTML);
+    if ((document.width < 480) || (document.height < 480)) {
+      self.purpleScheduler.init('purple-scheduler', null, "day");
+    } else {
+      self.purpleScheduler.init('purple-scheduler', null, "month");
+    }
 
-    // onEmptyClick - occurs when the user clicks on an empty space (not on events) i.e., user is creating a new event
-    scheduler.attachEvent("onEmptyClick", function (date, native_event_object){
+    // 'onEmptyClick' - occurs when the user clicks on an empty space (not on events) i.e., user is creating a new event
+    self.purpleScheduler.attachEvent("onEmptyClick", function (date, native_event_object){
+
       var y = date.getFullYear(),
         m = date.getMonth(),
         d = date.getDate(),
@@ -62,165 +53,108 @@ window.PurpleCalendar = (function() {
           }),
           s = new Date(y, m, d, h, min),
           e = new Date(y, m, d, h+1, min);
+
       newModel.set_field('start', 'datetime', s);
       newModel.set_field('end', 'datetime', e);
       editEventView.updateModel(newModel);
       $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
     });
 
-    // onEventAdded - occurs when the user adds a new event
-    scheduler.attachEvent("onEventAdded", function(event_id, event_object){
-      var calEvent = scheduler.getEvent(event_id), newModel = new ActivityCalEvent({
-        xelement_id: "ACTIVITY-CALENDAR-EVENTS-GUID",
-        user_id: Dynamo.CURRENT_USER_ID,
-        group_id: Dynamo.CURRENT_GROUP_ID
-      });
-      newModel.set_field('title', 'string', calEvent.text);
-      newModel.set_field('start', 'datetime', calEvent.start_date);
-      newModel.set_field('end', 'datetime', calEvent.end_date);
-      editEventView.updateModel(newModel);
-      $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
+    // 'onEventAdded' - occurs when the user adds a new event
+    self.purpleScheduler.attachEvent("onEventAdded", function(event_id, event_object){
+      self.createEventAndOpenForm(event_id)
     });
 
-    // onClick - occurs when the user clicks the left mouse button on an event
-    scheduler.attachEvent("onClick", function (event_id, native_event_object){
-      updateACEventOpenForm(event_id);
-    });
-
-    // onDblClick - occurs when the user dbl-clicks on an event
-    scheduler.attachEvent("onDblClick", function (event_id, native_event_object){
-      updateACEventOpenForm(event_id);
-    });
-
-    updateACEventOpenForm = function(event_id) {
-      var calEvent = scheduler.getEvent(event_id);
-      var acEvent = ActivityCalEvents.get(calEvent.id);
-      editEventView.updateModel(acEvent);
-      $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
-    };
-
-    // scheduler.attachEvent("onBeforeLightbox", function (event_id){
-    //   var calEvent = scheduler.getEvent(event_id);
-    //   var newModel = new ActivityCalEvent();
-    //   newModel.set_field('title', 'string', calEvent.text);
-    //   newModel.set_field('start', 'datetime', calEvent.start_date);
-    //   newModel.set_field('end', 'datetime', calEvent.end_date);
-    //   editEventView.updateModel(newModel);
-    //   $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
+    // 'onBeforeLightbox' - details form opening
+    // self.purpleScheduler.attachEvent("onBeforeLightbox", function (event_id){
+    //   self.createEventAndOpenForm(event_id)
     // });
 
-    // scheduler.attachEvent("onEventCreated", function(event_id,event_object){
-    //   var calEvent = scheduler.getEvent(event_id);
-    //   var newModel = new ActivityCalEvent();
-    //   newModel.set_field('title', 'string', calEvent.text);
-    //   newModel.set_field('start', 'datetime', calEvent.start_date);
-    //   newModel.set_field('end', 'datetime', calEvent.end_date);
-    //   editEventView.updateModel(newModel);
-    //   $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
-    // });
+    // 'onClick' - occurs when the user clicks the left mouse button on an event
+    self.purpleScheduler.attachEvent("onClick", function (event_id, native_event_object){
+      self.updateEventAndOpenForm(event_id);
+    });
 
-    // if ((screen.width < 480) || (screen.height < 480)) {
-    if ((document.width < 480) || (document.height < 480)) {
+    // 'onDblClick' - occurs when the user dbl-clicks on an event
+    self.purpleScheduler.attachEvent("onDblClick", function (event_id, native_event_object){
+      self.updateEventAndOpenForm(event_id);
+    });
 
-      scheduler.init('scheduler_here',null,"day");
+    // 'onEventCreated' - fires when event creation process is started ( dbl-click , or drag-create )
+    self.purpleScheduler.attachEvent("onEventCreated", function(event_id, event_object){
+      self.createEventAndOpenForm(event_id)
+    });
 
-    } else {
+  };
 
-      scheduler.init('scheduler_here',null,"month");
+  Calendar.prototype.createEventAndOpenForm = function(event_id) {
+    var calEvent = this.purpleScheduler.getEvent(event_id);
+    var newModel = new ActivityCalEvent({
+      xelement_id: "ACTIVITY-CALENDAR-EVENTS-GUID",
+      user_id: Dynamo.CURRENT_USER_ID,
+      group_id: Dynamo.CURRENT_GROUP_ID
+    });
+    
+    newModel.set_field('title', 'string', calEvent.text);
+    newModel.set_field('start', 'datetime', calEvent.start_date);
+    newModel.set_field('end', 'datetime', calEvent.end_date);
+    editEventView.updateModel(newModel);
+    $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
+  };
 
-      // $(this.container).prepend('<div id="calendar"></div>');
-      // this.$el = $(this.container).find('div#calendar');
-      // var height = $("#visualizations-outer-container").height() - 40;
+  Calendar.prototype.load = function() {
 
-      // this.$el.fullCalendar({
-      //   height:height,
-      //   header: {
-      //     left: 'agendaDay,agendaWeek,month',
-      //     center: 'title',
-      //     right: 'prev,next today'
-      //   },
-      //   // 
-      //   selectable: true,
-      //   editable: true,
-      //   events: function(start, end, callback) {
+    var schedulerHTML = '<div id="purple-scheduler" class="dhx_cal_container" style="width:100%; height:500px;""><div class="dhx_cal_navline"><div class="dhx_cal_prev_button">&nbsp;</div><div class="dhx_cal_next_button">&nbsp;</div><div class="dhx_cal_today_button"></div><div class="dhx_cal_date"></div><div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div><div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div><div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div></div><div class="dhx_cal_header"></div><div class="dhx_cal_data"></div></div>'
 
-      //     var eventsInPeriod, eventObjs;
+    $(this.container).html(schedulerHTML);
+    this.initScheduler()
+    this.loadJSONData();
+  
+  };
 
-      //     var filtered_events = self.filteredEventsFn();
+  Calendar.prototype.loadJSONData = function() {
 
-      //     eventsInPeriod = filtered_events.filter(function(event) { 
-      //       return (
-      //         ( event.get_field_value('start') >= start && event.get_field_value('start') <= end ) || 
-      //         ( event.get_field_value('end') >= start && event.get_field_value('end') <= end )
-      //       );
-      //     });
+    var eventObjs, filtered_events = this.filteredEventsFn();
 
-      //     eventObjs = eventsInPeriod.map(function(event) { 
-      //       return _.extend({id: event.cid}, event.get_fields_as_object()) 
-      //     });
+    eventObjs = filtered_events.map(function(calEvent) { 
+      var startDate = calEvent.get_field_value('start');
+      var startMonth = startDate.getMonth() + 1;
+      var startDateString = ((startMonth<10?'0':'') + startMonth)+"."+( (startDate.getDate()<10?'0':'') + startDate.getDate())+"."+startDate.getFullYear()+" "+startDate.getHours()+":"+( (startDate.getMinutes()<10?'0':'') + startDate.getMinutes() );
+      var endDate = calEvent.get_field_value('end');
+      var endMonth = endDate.getMonth() + 1;
+      var endDateString = ((endMonth<10?'0':'') + endMonth)+"."+( (endDate.getDate()<10?'0':'') + endDate.getDate())+"."+endDate.getFullYear()+" "+endDate.getHours()+":"+( (endDate.getMinutes()<10?'0':'') + endDate.getMinutes() );
+      return _.extend({id: calEvent.cid, text: calEvent.get_field_value('title'), start_date:startDateString, end_date:endDateString }, calEvent.get_fields_as_object());
+    });
 
-      //     callback(eventObjs);
-      //   },
-        
-      //   eventClick: function(calEvent, jsEvent, view) {
-      //     var acEvent = ActivityCalEvents.get(calEvent.id);
-      //     editEventView.updateModel( acEvent );
-      //     //editEventView should have an updated start time and an updated 'currentState'
-      //     $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
-      //   },
-
-      //   dayClick: function(timeClicked, allDay, jsEvent, view) {
-      //     var y = timeClicked.getFullYear(),
-      //         m = timeClicked.getMonth(),
-      //         d = timeClicked.getDate(),
-      //         h = timeClicked.getHours(),
-      //         min = timeClicked.getMinutes();
-
-      //     if (allDay) {
-      //       h = 12;
-      //       min = 0;
-      //     };
-
-      //     var newModel = new ActivityCalEvent(),
-      //         s = new Date(y, m, d, h, min),
-      //         e = new Date(y, m, d, h+1, min);
-      //     newModel.set_field('start', 'datetime', s);
-      //     newModel.set_field('end', 'datetime', e);
-      //     //m should have the correct start time.
-      //     editEventView.updateModel(newModel);
-      //     //editEventView should have an updated start time
-      //     //and an updated 'currentState'
-      //     $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
-      //   }    
-      // });
-
-    }
-
-    this.loadJSONData()
-
+    this.purpleScheduler.parse(eventObjs,"json");
   };
 
   Calendar.prototype.reload = function() {
+    this.purpleScheduler.clearAll();
     this.loadJSONData();
-    // this.$el.fullCalendar( 'refetchEvents' );
   };
 
-  Calendar.prototype.remove = function() {
+  Calendar.prototype.remove = function(model) {
     this.currentlyRendered = false;
     this.$el.remove();
   };   
 
   Calendar.prototype.render = function() {
-
     if (!this.currentlyRendered) {
       this.load();
       this.currentlyRendered = true;
     } else {
       this.reload();
-    }
+    };
+  };
 
+  Calendar.prototype.updateEventAndOpenForm = function(event_id) {
+    var calEvent = this.purpleScheduler.getEvent(event_id);
+    var acEvent = ActivityCalEvents.get(calEvent.id);
+    editEventView.updateModel(acEvent);
+    $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
   };
 
   return Calendar;
 
-}) ();
+})();

@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
 <title>Activity Tracker</title>
-<meta  name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- http://docs.dhtmlx.com/doku.php?id=dhtmlxscheduler:touch_support -->
+<!-- <meta  name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no"> -->
 <link rel='stylesheet' type='text/css' href='css/fullcalendar.css' />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
 <link rel="stylesheet" href="css/purple_styles/application.css" />
-<link rel="stylesheet" type="text/css" href="js/vendor/scheduler/dhtmlxscheduler.css">
-<!-- <link rel="stylesheet" type="text/css" href="js/vendor/scheduler/dhtmlxscheduler_dhx_terrace.css"> -->
-<link rel="stylesheet" type="text/css" href="js/vendor/scheduler/dhtmlxscheduler_glossy.css">
+<!-- <link rel="stylesheet" type="text/css" href="js/vendor/scheduler/dhtmlxscheduler.css"> -->
+<link rel="stylesheet" type="text/css" href="js/vendor/scheduler/dhtmlxscheduler_dhx_terrace.css">
+<!-- <link rel="stylesheet" type="text/css" href="js/vendor/scheduler/dhtmlxscheduler_glossy.css"> -->
 <style media="screen" type="text/css">
   form.inline, div.inline {
     display:inline-block;
@@ -101,6 +103,7 @@ see http://arshaw.com/fullcalendar/docs for details
  -->
 <script type='text/javascript' src='js/vendor/fullcalendar.js'></script>
 <script type='text/javascript' src='js/vendor/scheduler/dhtmlxscheduler.js'></script>
+<script type='text/javascript' src='js/vendor/scheduler/ext/dhtmlxscheduler_dhx_terrace.js'></script>
 
 <script type='text/javascript' src='js/purple_calendar.js'></script>
 
@@ -401,7 +404,7 @@ loadPage = function() {
   });  
 
   editEventView.on('model:save', function() {
-    editEventView.model.save({async:false});
+    editEventView.model.save(null, {async:false});
     ActivityCalEvents.add(editEventView.model, { merge: true });
     editEventView.updateModel(
       new ActivityCalEvent({
@@ -416,7 +419,7 @@ loadPage = function() {
   editEventView.on('model:delete', function() {
     ActivityCalEvents.remove(editEventView.model);
     editEventView.model.destroy({async:false, success: function() {
-      renderVisualization(); //not working!
+      renderVisualization();
       alert('Your event was deleted.');
     }});
     editEventView.updateModel(
@@ -482,8 +485,8 @@ loadPage = function() {
           getArrayFn:  filteredEvents,
           elementTemplate: DIT["dynamo/activity_tracker/show_event"],
           onElementClick: function(clickEvent) {
-            var event = ActivityCalEvents.get($(clickEvent.currentTarget).data("cid"));
-            editEventView.updateModel( event );
+            var calEvent = ActivityCalEvents.get($(clickEvent.currentTarget).data("cid"));
+            editEventView.updateModel( calEvent );
             $('div#edit-event-container').effect("highlight", {}, 2000);
           }
         });
