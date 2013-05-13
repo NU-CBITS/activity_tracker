@@ -439,7 +439,6 @@ loadPage = function() {
       if ( (m.get_field_value('end') > m.get_field_value('start')) ) {      
         var calEventIds = _.map(calendarEvents, function(calEvent){ return calEvent.id; });
         var eventIndex = _.indexOf(calEventIds, m.cid);
-
         if (eventIndex != -1) {
           //updating existing event.
           calendarEvents[eventIndex] = _.extend( {}, m.get_fields_as_object(), { id: m.cid } );

@@ -55,7 +55,11 @@ window.PurpleCalendar = (function() {
       //   min = 0;
       // };
 
-      var newModel = new ActivityCalEvent(),
+      var newModel = new ActivityCalEvent({
+            xelement_id: "ACTIVITY-CALENDAR-EVENTS-GUID",
+            user_id: Dynamo.CURRENT_USER_ID,
+            group_id: Dynamo.CURRENT_GROUP_ID
+          }),
           s = new Date(y, m, d, h, min),
           e = new Date(y, m, d, h+1, min);
       newModel.set_field('start', 'datetime', s);
@@ -66,8 +70,11 @@ window.PurpleCalendar = (function() {
 
     // onEventAdded - occurs when the user adds a new event
     scheduler.attachEvent("onEventAdded", function(event_id, event_object){
-      var calEvent = scheduler.getEvent(event_id);
-      var newModel = new ActivityCalEvent();
+      var calEvent = scheduler.getEvent(event_id), newModel = new ActivityCalEvent({
+        xelement_id: "ACTIVITY-CALENDAR-EVENTS-GUID",
+        user_id: Dynamo.CURRENT_USER_ID,
+        group_id: Dynamo.CURRENT_GROUP_ID
+      });
       newModel.set_field('title', 'string', calEvent.text);
       newModel.set_field('start', 'datetime', calEvent.start_date);
       newModel.set_field('end', 'datetime', calEvent.end_date);
