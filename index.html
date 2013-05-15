@@ -420,15 +420,15 @@ loadPage = function() {
     ActivityCalEvents.remove(editEventView.model);
     editEventView.model.destroy({async:false, success: function() {
       renderVisualization();
-      alert('Your event was deleted.');
+      // alert('Your event was deleted.');
     }});
-    editEventView.updateModel(
-      new ActivityCalEvent({
-        xelement_id: "ACTIVITY-CALENDAR-EVENTS-GUID",
-        user_id: Dynamo.CURRENT_USER_ID,
-        group_id: Dynamo.CURRENT_GROUP_ID
-      })
-    );
+    // editEventView.updateModel(
+    //   new ActivityCalEvent({
+    //     xelement_id: "ACTIVITY-CALENDAR-EVENTS-GUID",
+    //     user_id: Dynamo.CURRENT_USER_ID,
+    //     group_id: Dynamo.CURRENT_GROUP_ID
+    //   })
+    // );
   });
 
   editEventView.updateModel = function(newModelObj) {

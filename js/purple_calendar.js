@@ -21,6 +21,25 @@ window.PurpleCalendar = (function() {
     this.filteredEventsFn = eventsFn;
   };
 
+  Calendar.prototype.createEventAndOpenForm = function(event_id) {
+    var calEvent = this.purpleScheduler.getEvent(event_id);
+    var newModel = new ActivityCalEvent({
+      xelement_id: "ACTIVITY-CALENDAR-EVENTS-GUID",
+      user_id: Dynamo.CURRENT_USER_ID,
+      group_id: Dynamo.CURRENT_GROUP_ID
+    });
+    
+    newModel.set_field('title', 'string', calEvent.text);
+    newModel.set_field('start', 'datetime', calEvent.start_date);
+    newModel.set_field('end', 'datetime', calEvent.end_date);
+    
+    newModel.save(null, { async: false });
+    ActivityCalEvents.add(newModel, { merge: true });
+
+    editEventView.updateModel(newModel);
+    $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
+  };
+
   Calendar.prototype.initScheduler = function() {
     var self = this;
 
@@ -61,14 +80,9 @@ window.PurpleCalendar = (function() {
     });
 
     // 'onEventAdded' - occurs when the user adds a new event
-    self.purpleScheduler.attachEvent("onEventAdded", function(event_id, event_object){
+    self.purpleScheduler.attachEvent("onEventAdded", function(event_id, event_object) {
       self.createEventAndOpenForm(event_id)
     });
-
-    // 'onBeforeLightbox' - details form opening
-    // self.purpleScheduler.attachEvent("onBeforeLightbox", function (event_id){
-    //   self.createEventAndOpenForm(event_id)
-    // });
 
     // 'onClick' - occurs when the user clicks the left mouse button on an event
     self.purpleScheduler.attachEvent("onClick", function (event_id, native_event_object){
@@ -80,26 +94,6 @@ window.PurpleCalendar = (function() {
       self.updateEventAndOpenForm(event_id);
     });
 
-    // 'onEventCreated' - fires when event creation process is started ( dbl-click , or drag-create )
-    self.purpleScheduler.attachEvent("onEventCreated", function(event_id, event_object){
-      self.createEventAndOpenForm(event_id)
-    });
-
-  };
-
-  Calendar.prototype.createEventAndOpenForm = function(event_id) {
-    var calEvent = this.purpleScheduler.getEvent(event_id);
-    var newModel = new ActivityCalEvent({
-      xelement_id: "ACTIVITY-CALENDAR-EVENTS-GUID",
-      user_id: Dynamo.CURRENT_USER_ID,
-      group_id: Dynamo.CURRENT_GROUP_ID
-    });
-    
-    newModel.set_field('title', 'string', calEvent.text);
-    newModel.set_field('start', 'datetime', calEvent.start_date);
-    newModel.set_field('end', 'datetime', calEvent.end_date);
-    editEventView.updateModel(newModel);
-    $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
   };
 
   Calendar.prototype.load = function() {
