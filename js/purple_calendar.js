@@ -46,8 +46,9 @@ window.PurpleCalendar = (function() {
     // self.purpleScheduler = dhx; //relies on dhxscheduler_mobile.js
     self.purpleScheduler = scheduler; //relies on dhtmlxscheduler.js
 
-    if ((screen.width < 480) || (screen.height < 480)) {
+    // if ((screen.width < 480) || (screen.height < 480)) {
     // if ((document.width < 480) || (document.height < 480)) {
+    if (($(window).width() < 767) || ($(window).height() < 767)) {
       self.purpleScheduler.init('purple-scheduler', null, "day");
     } else {
       self.purpleScheduler.init('purple-scheduler', null, "month");

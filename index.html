@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
 <title>Activity Tracker</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- http://docs.dhtmlx.com/doku.php?id=dhtmlxscheduler:touch_support -->
-<!-- <meta  name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel='stylesheet' type='text/css' href='css/fullcalendar.css' />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
 <link rel="stylesheet" href="css/purple_styles/application.css" />
@@ -12,58 +10,8 @@
 <link rel="stylesheet" type="text/css" href="js/vendor/scheduler/dhtmlxscheduler_dhx_terrace.css">
 <!-- <link rel="STYLESHEET" type="text/css" href="js/vendor/scheduler/dhxscheduler_mobile.css"> -->
 <!-- <link rel="stylesheet" type="text/css" href="js/vendor/scheduler/dhtmlxscheduler_glossy.css"> -->
-
-<style>
-  body{
-    overflow: visible!important;
-  }
-</style>
-
 <style media="screen" type="text/css">
-  form.inline, div.inline {
-    display:inline-block;
-  }
-  .text-center {
-    text-align:center;
-  }
-  .form-condensed label.checkbox {
-    margin-top: 0;
-    margin-bottom: 5px;
-  }
-  .form-horizontal .control-label {
-    width: 60px;
-  }
-  .form-horizontal .controls {
-    margin-left: 80px;
-  }
-  .form-horizontal .emotion-tags .control-label{
-    width: 100px;
-  }
-  .form-horizontal .emotion-tags .controls {
-    margin-left: 120px;
-  }
-  .alert {
-    padding: 8px 14px 8px 14px;
-  }
-  .label-alert {
-    background-color: #FCF8E3;
-    border: 1px solid #FBEED5;
-  }
-  .input-tag {
-    margin:5px;
-  }
-  .input-tag input {
-    margin:0px;
-  }
-  button i.icon-ok {
-    color:#468847;
-  }
-  #visualizations-container.widget-content {
-    padding-top:10px;
-  }
-  #visualizations.btn-toolbar {
-    margin-top:0px;
-  }
+
   #filters-container {
     position:relative;
   }
@@ -76,6 +24,40 @@
   #filters.popover .arrow {
     left: 96%;
   }
+  .slider-bar {
+    width:80%;display: inline-block;
+  }
+  .slider-number {
+    width:15%;display: inline-block;
+  }
+  @media (min-width: 1200px) {
+    #app-container {
+      margin-top: 60px;
+    }    
+  }
+  @media (max-width: 979px) {
+    #app-container {
+      overflow-y: scroll;
+      margin-top: 0px;
+    }   
+  }
+  @media (min-width: 481px) {
+    #visualizations-outer-container {
+      overflow-y: visible;
+      padding-top: 10px;
+    }
+  }
+  @media (max-width: 767px) {
+    #list-button {
+      margin-top:5px;
+    }
+  }
+  @media (max-width: 480px) {
+    #visualizations-outer-container {
+      padding-top: 10px;
+    }
+  }
+
 </style>
 
 <script type="text/javascript" src="config.js"></script>
@@ -145,7 +127,6 @@ function selectedValues(selector) {
   return r;
 };
 
-
 //
 // Toggle With Arrow
 //
@@ -195,7 +176,6 @@ ActivityCalEvent = Dynamo.Data.extend({
 
 });
 
-
 //
 // Activity Calendar Specific Filters
 // (eventFilters defined in included file: 'filter_class_instance.js')
@@ -228,7 +208,6 @@ eventFilters.add(function (event) {
   return passed;
 
 });
-
 
 //
 // Business Logic for Activity Calendar Defined Here in loadPage fn
@@ -299,7 +278,6 @@ loadPage = function() {
   ActivityCalEvents.on('remove', function() {
     renderVisualization();
   });
-
 
   //
   // Define editEventView
@@ -540,7 +518,7 @@ $(function() {
     var newHeight, windowHeight = $(window).height();
     newHeight = windowHeight - 142;
     $("#visualizations-outer-container").css({
-      height:newHeight
+      'min-height':newHeight
     });
   };
   $(window).resize(setVisualizationOuterContainerHeight); //however, it doesn't resize calendar
@@ -574,7 +552,7 @@ $(function() {
   </div>
 
   <!-- page-container connect -->
-  <div id="app-container" class="container-fluid" style="margin-top:60px;">
+  <div id="app-container" class="container-fluid">
 
     <div id="app-row-1" class="row-fluid">
 
@@ -599,7 +577,7 @@ $(function() {
           </ul>
         </div>
 
-        <div id="visualizations-outer-container" class="widget-content" style="overflow-y: scroll;padding-top: 10px">
+        <div id="visualizations-outer-container" class="widget-content">
 
           <div id="filters-container" class="row-fluid">
             <div id="filters" class="popover fade bottom in span12">
@@ -693,13 +671,9 @@ $(function() {
           </div>
 
           <div id="visualizations-container">
-            <div id="visualizations" class="row-fluid btn-toolbar">
-              <div id="calendar-button-container" class="span6">
-                <button id="calendar-button" class="btn btn-block" value="calendar"><i class="icon-calendar"></i> Calendar</button>
-              </div>
-              <div id="list-button-container" class="span6">
-                <button id="list-button" class="btn btn-block" value="list"><i class="icon-list"></i> List</button>
-              </div>             
+            <div id="visualizations" class="row-fluid">
+              <button id="calendar-button" class="btn span6" value="calendar"><i class="icon-calendar"></i> Calendar</button>
+              <button id="list-button" class="btn span6" value="list"><i class="icon-list"></i> List</button>
             </div>
 
             <div class="stream">
