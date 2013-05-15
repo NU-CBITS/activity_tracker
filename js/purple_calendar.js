@@ -43,9 +43,11 @@ window.PurpleCalendar = (function() {
   Calendar.prototype.initScheduler = function() {
     var self = this;
 
+    // self.purpleScheduler = dhx; //relies on dhxscheduler_mobile.js
     self.purpleScheduler = scheduler; //relies on dhtmlxscheduler.js
 
-    if ((document.width < 480) || (document.height < 480)) {
+    if ((screen.width < 480) || (screen.height < 480)) {
+    // if ((document.width < 480) || (document.height < 480)) {
       self.purpleScheduler.init('purple-scheduler', null, "day");
     } else {
       self.purpleScheduler.init('purple-scheduler', null, "month");
@@ -101,6 +103,7 @@ window.PurpleCalendar = (function() {
     var schedulerHTML = '<div id="purple-scheduler" class="dhx_cal_container" style="width:100%; height:500px;""><div class="dhx_cal_navline"><div class="dhx_cal_prev_button">&nbsp;</div><div class="dhx_cal_next_button">&nbsp;</div><div class="dhx_cal_today_button"></div><div class="dhx_cal_date"></div><div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div><div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div><div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div></div><div class="dhx_cal_header"></div><div class="dhx_cal_data"></div></div>'
 
     $(this.container).html(schedulerHTML);
+
     this.initScheduler()
     this.loadJSONData();
   
@@ -121,6 +124,7 @@ window.PurpleCalendar = (function() {
     });
 
     this.purpleScheduler.parse(eventObjs,"json");
+
   };
 
   Calendar.prototype.reload = function() {
