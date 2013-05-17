@@ -36,8 +36,26 @@
     }    
   }
   @media (max-width: 979px) {
+    body {
+      padding-left:0px;
+      padding-right:0px;
+      /*padding-right: -20px;*/
+    }
+    .navbar-fixed-top {
+      margin-bottom: 0px;
+    }
+    .navbar.navbar-inverse.navbar-fixed-top {
+      padding-left: 20px;
+      padding-right:20px;
+    }
+    .widget {
+      margin-bottom: 0px;
+    }
+    .widget-header+.widget-content {
+      border: 1px solid #D5D5D5;
+    }
     #app-container {
-      overflow-y: scroll;
+      /*overflow-y: scroll;*/
       margin-top: 0px;
     }   
   }
@@ -449,7 +467,6 @@ loadPage = function() {
   };
 
   editEventView.saveModel = function() {
-    debugger;
     this.model.save();
   };
 
@@ -682,8 +699,8 @@ $(function() {
 
           <div id="visualizations-container">
             <div id="visualizations" class="row-fluid">
-              <button id="calendar-button" class="btn span6" value="calendar"><i class="icon-calendar"></i> Calendar</button>
-              <button id="list-button" class="btn span6" value="list"><i class="icon-list"></i> List</button>
+              <button id="calendar-button" class="btn span6 btn-large" value="calendar"><i class="icon-calendar"></i> Calendar</button>
+              <button id="list-button" class="btn span6 btn-large" value="list"><i class="icon-list"></i> List</button>
             </div>
 
             <div class="stream">

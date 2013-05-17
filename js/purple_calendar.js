@@ -56,7 +56,8 @@ window.PurpleCalendar = (function() {
     var self = this;
 
     // self.purpleScheduler = dhx; //relies on dhxscheduler_mobile.js
-    self.purpleScheduler = scheduler; //relies on dhtmlxscheduler.js
+    scheduler.config.hour_date="%h:%i %A"; //relies on dhtmlxscheduler.js
+    self.purpleScheduler = scheduler;
 
     // if ((screen.width < 480) || (screen.height < 480)) {
     // if ((document.width < 480) || (document.height < 480)) {
@@ -116,6 +117,9 @@ window.PurpleCalendar = (function() {
 
     // Event occurs when a new “event” was added or existing one changed, by drag-n-drop action.
     self.purpleScheduler.attachEvent("onBeforeEventChanged", function(event_object, native_event, is_new, unmodified_event){
+      console.warn('event_object', event_object)
+      debugger;
+
       var cps = self, event_id = event_object.id;
       if (is_new === true) {
         self.createEventAndOpenForm(event_id)
@@ -125,11 +129,7 @@ window.PurpleCalendar = (function() {
         var acEvent = ActivityCalEvents.get(calEvent.id);
         acEvent.set_field('start', "datetime", event_object.start_date)
         acEvent.set_field('end', "datetime", event_object.end_date)
-
-        // editEventView.model.save(null, {async:false});
-        // ActivityCalEvents.add(editEventView.model, { merge: true });
         editEventView.updateModel(acEvent);
-        debugger;
         editEventView.saveModel();
         $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
       }
