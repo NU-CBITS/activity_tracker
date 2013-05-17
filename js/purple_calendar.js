@@ -13,6 +13,18 @@ jQuery.fn.openForm = function() {
   return $(this);
 };
 
+jQuery.fn.closeForm = function() {
+  var container = $(this);
+  var body = container.find(".accordion-body");
+  if (body.length === 1) { body.hide() };
+  if (container.find('i.icon-caret-right').length === 1) {
+    container.find('i.icon-caret-right').removeClass('icon-caret-right').addClass('icon-caret-down');
+  } else {
+    container.find('i.icon-caret-down').removeClass('icon-caret-down').addClass('icon-caret-right');
+  }
+  return $(this);
+};
+
 window.PurpleCalendar = (function() {
 
   function Calendar(container, eventsFn) {
@@ -28,7 +40,7 @@ window.PurpleCalendar = (function() {
       user_id: Dynamo.CURRENT_USER_ID,
       group_id: Dynamo.CURRENT_GROUP_ID
     });
-    
+
     newModel.set_field('title', 'string', calEvent.text);
     newModel.set_field('start', 'datetime', calEvent.start_date);
     newModel.set_field('end', 'datetime', calEvent.end_date);
@@ -97,6 +109,32 @@ window.PurpleCalendar = (function() {
       self.updateEventAndOpenForm(event_id);
     });
 
+    // 'onBeforeLightbox' - details form opening
+    self.purpleScheduler.attachEvent("onBeforeLightbox", function (event_id){
+      self.createEventAndOpenForm(event_id) // Hides lightbox form, but creates it!
+    });
+
+    // Event occurs when a new “event” was added or existing one changed, by drag-n-drop action.
+    self.purpleScheduler.attachEvent("onBeforeEventChanged", function(event_object, native_event, is_new, unmodified_event){
+      var cps = self, event_id = event_object.id;
+      if (is_new === true) {
+        self.createEventAndOpenForm(event_id)
+      } else {
+        // When dragging to update an already existing event
+        var calEvent = cps.purpleScheduler.getEvent(event_id);
+        var acEvent = ActivityCalEvents.get(calEvent.id);
+        acEvent.set_field('start', "datetime", event_object.start_date)
+        acEvent.set_field('end', "datetime", event_object.end_date)
+
+        // editEventView.model.save(null, {async:false});
+        // ActivityCalEvents.add(editEventView.model, { merge: true });
+        editEventView.updateModel(acEvent);
+        debugger;
+        editEventView.saveModel();
+        $('div#edit-event-container').openForm().effect("highlight", {}, 1000);
+      }
+      return true;
+    });
   };
 
   Calendar.prototype.load = function() {

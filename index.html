@@ -66,7 +66,7 @@
 <script type="text/javascript" src="config.js"></script>
 <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="js/vendor/jquery-ui-1.9.2.custom.min.js"></script>
-<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="css/purple_styles/bootstrap/js/bootstrap.js"></script>
 <script type="text/javascript" src="js/vendor/underscore-1.4.4.min.js"></script>
 <script type="text/javascript" src="dynamo/vendor/tee.js"></script>
 <script type="text/javascript" src="js/vendor/knockout-2.2.min.js"></script>
@@ -386,7 +386,7 @@ loadPage = function() {
     },
     modelAttsFn: function(model) {
       return model.get_fields_as_object();
-    }, 
+    },
     arrayDefaults: {
       "tags": ""
     },
@@ -410,6 +410,7 @@ loadPage = function() {
     ActivityCalEvents.remove(editEventView.model);
     editEventView.model.destroy({async:false, success: function() {
       renderVisualization();
+      $('div#edit-event-container').closeForm().effect("highlight", {}, 1000);
       // alert('Your event was deleted.');
     }});
     // editEventView.updateModel(
@@ -446,6 +447,12 @@ loadPage = function() {
     });
     self.render();
   };
+
+  editEventView.saveModel = function() {
+    debugger;
+    this.model.save();
+  };
+
 
   //
   // RENDER EVERYTHING.
