@@ -24,12 +24,6 @@
   #filters.popover .arrow {
     left: 96%;
   }
-  .slider-bar {
-    width:80%;display: inline-block;
-  }
-  .slider-number {
-    width:15%;display: inline-block;
-  }
   @media (min-width: 1200px) {
     #app-container {
       margin-top: 60px;
@@ -71,6 +65,9 @@
     }
     #activity-list-container {
       padding-bottom: 25px;
+    }
+    .widget-content.form-condensed.accordion-body {
+      margin-bottom:0px;
     }
   }
   @media (max-width: 480px) {
@@ -307,7 +304,7 @@ loadPage = function() {
   var opensAndClosesWithChevron = {
 
     events: {
-      "click .accordion-header li.caret-icons": "showWidgetContent",
+      "click .accordion-header": "showWidgetContent",
       "click li.dropdown a.dropdown-toggle": "showDropdownAndWidgetContent"
     },
 

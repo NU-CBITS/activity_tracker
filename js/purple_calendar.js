@@ -118,8 +118,6 @@ window.PurpleCalendar = (function() {
     // Event occurs when a new “event” was added or existing one changed, by drag-n-drop action.
     self.purpleScheduler.attachEvent("onBeforeEventChanged", function(event_object, native_event, is_new, unmodified_event){
       console.warn('event_object', event_object)
-      debugger;
-
       var cps = self, event_id = event_object.id;
       if (is_new === true) {
         self.createEventAndOpenForm(event_id)
